@@ -1,0 +1,35 @@
+/* ----------------Top-level div for Handpose --------------*/
+
+#handpose-component{
+  display: grid;
+}
+
+/* ----------------Top-level div for Handpose --------------*/
+
+#handpose-canvas{
+
+}
+#handpose-controls{
+
+}
+#handpose-video{
+
+}
+
+/* ----------------Components for controls --------------*/
+
+#handpose-colour-palette{
+
+}
+
+#handpose-transparency{
+
+}
+
+#handpose-brush-selector{
+
+}
+
+#handpose-clear-canvas{
+
+}

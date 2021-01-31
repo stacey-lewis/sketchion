@@ -1,13 +1,13 @@
 import logo from './logo.svg';
-import Canvas from './components/Canvas';
-import Handpose from './components/Handpose';
+// import Canvas from './components/Canvas';
+import Home from './components/Home';
 // import HandposeReactExample from './components/HandposeReactExample';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Handpose />
+      <Home />
       {/* <Canvas /> */}
       {/* <App /> */}
     </div>
