@@ -16,6 +16,8 @@ const Handpose = () => {
      // let root = document.documentElement;
      let prevXPos = "";
      let prevYPos = "";
+     let prevXPosPinky = "";
+     let prevYPosPinky = "";
 
 
      console.log('p5', p5);
@@ -24,14 +26,22 @@ const Handpose = () => {
     p5.setup = () => {
        // p5.createCanvas(p5.windowWidth, p5.windowHeight);
        //TODO: STRETCH CANVAS IN CSS
-       cvs = p5.createCanvas(p5.windowWidth * (5/8), p5.windowHeight * (6/8));
+       cvs = p5.createCanvas(p5.windowWidth, p5.windowHeight );
        // console.log(cvs);
        // cvs.style('display', 'inline-block');
        video = p5.createCapture(p5.VIDEO);
        video.size = (640, 480);
 
         // call modelReady() when it is loaded
-       const handpose = ml5.handpose(video, ml5.modelReady);
+        const options = {
+          flipHorizontal: true,
+          maxContinuousChecks: Infinity, // How many frames to go without running the bounding box detector. Defaults to infinity, but try a lower value if the detector is consistently producing bad predictions.
+          detectionConfidence: 0.8, // Threshold for discarding a prediction. Defaults to 0.8.
+          scoreThreshold: 0.75, // A threshold for removing multiple (likely duplicate) detections based on a "non-maximum suppression" algorithm. Defaults to 0.75
+          iouThreshold: 0.3
+        };
+       const handpose = ml5.handpose(video, options,
+         ml5.modelReady);
        // let parent = document.getElementById('handpose-component');
 
        // This sets up an event that fills the global variable "predictions"
@@ -71,7 +81,8 @@ const Handpose = () => {
 
     ml5.modelReady= () => {
       console.log("Model ready!");
-      };
+
+    }; //modelReady
 
     p5.draw = () => {
       //set background to white ... this removes previous draws on each update.
@@ -85,7 +96,10 @@ const Handpose = () => {
       window.predictions = predictions; //cheat to see what is this variable in console.
       //TODO: Create way to click button on and off for type of drawing i.e. if x selected than run y draw function ...
     // drawFromAllHandPoints();
-    drawFromIndexFingerLine();
+    // drawFromIndexFingerSharpLine();
+    // drawFromIndexFingerCurveLine();
+    // drawWithPalm();
+    drawFromIndexFingerDots();
       //for each marker on the hand, loop through and apply fill of bright green, no border, and of a circle.
   }; //drawKeypoints
 
@@ -115,13 +129,10 @@ const Handpose = () => {
   }; //drawFromAllHandPoints
 
   //Only draws from one point on the index finger
-  const drawFromIndexFingerLine = () => {
+  const drawFromIndexFingerSharpLine = () => {
     for (let i = 0; i < predictions.length; i += 1) {
       const prediction = predictions[i];
       const keypoint = prediction.landmarks[8];
-
-      // console.log(keypoint);
-      // p5.fill(0,0,0); //draw colour across index finger.
         //TODO: UPDATE WITH SINGLE COLOUR THAT IS GENERATED FROM dat.GUI
       // p5.point(keypoint[0], keypoint[1]); //no border
       p5.stroke(0);
@@ -129,19 +140,56 @@ const Handpose = () => {
       prevXPos = keypoint[0];
       prevYPos = keypoint[1];
       // lerp = (current, new value, 0.5); - TODO: see if this works. https://www.youtube.com/watch?v=EA3-k9mnLHs - Code Train smoothing.
-      // p5.ellipse(keypoint[0], keypoint[1], 10, 10); //shape of draw.
     } //for
-  }; //drawFromIndexFingerLine
+  }; //drawFromIndexFingerSharpLine
+
+  const drawFromIndexFingerDots = () => {
+    for (let i = 0; i < predictions.length; i += 1) {
+      const prediction = predictions[i];
+      const keypoint = prediction.landmarks[8];
+        //TODO: UPDATE WITH SINGLE COLOUR THAT IS GENERATED FROM dat.GUI
+      p5.point(keypoint[0], keypoint[1]); //no border
+      p5.fill(0);
+    } //for
+  }; //drawFromIndexFingerDots
+
+  ///THIS DIDN"T WORK.
+  const drawFromIndexFingerCurveLine = () => {
+    for (let i = 0; i < predictions.length; i += 1) {
+      const prediction = predictions[i];
+      const keypoint = prediction.landmarks[8];
+      p5.stroke(0);
+      p5.line(keypoint[0], keypoint[1], prevXPos, prevYPos);
+      prevXPos = keypoint[0];
+      prevYPos = keypoint[1];
+    } //for
+    for (let i = 0; i < predictions.length; i += 1) {
+      const prediction = predictions[i];
+      const keypoint = prediction.landmarks[8];
+      p5.stroke(0);
+      p5.line(keypoint[0], keypoint[1], prevXPos, prevYPos);
+      prevXPos = keypoint[0];
+      prevYPos = keypoint[1];
+    } //for
+  }; //drawFromIndexFingerCurveLine
 
   const drawWithPalm = () => {
     for (let i = 0; i < predictions.length; i += 1) {
       const prediction = predictions[i];
-      for (let j = 0; j < prediction.landmarks.length; j += 1) {
-        const keypoint = prediction.landmarks[j];
-        p5.fill(0, 255, 0); //draw colour across all fingerspoints
-        p5.noStroke(); //no border
-      p5.ellipse(keypoint[0], keypoint[1], 10, 10); //shape of draw.
-      } //for
+      const keypoint = prediction.landmarks[8];
+      p5.stroke(0);
+      // p5.line(keypoint[0], keypoint[1], prevXPos, prevYPos); //joins lines at top/bottom.
+      prevXPos = keypoint[0];
+      prevYPos = keypoint[1];
+    } //for
+    for (let i = 0; i < predictions.length; i += 1) {
+      const prediction = predictions[i];
+      const keypoint = prediction.landmarks[4];
+      p5.stroke(0);
+      p5.line(keypoint[0], keypoint[1], prevXPos, prevYPos);
+      // p5.line(keypoint[0], keypoint[1], prevXPosPinky, prevYPosPinky); //joins lines at top/bottom of link
+      prevXPosPinky = keypoint[0];
+      prevYPosPinky = keypoint[1];
     } //for
   }; //drawFromAllHandPoints
 
