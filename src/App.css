@@ -1,13 +1,14 @@
-* {
+/* * {
   border: 1pt solid orange;
+} */
+
+
+ body {
+  background-color: #FCFAF0;
+  color: #B5B2B0;
 }
 
-
-/* .App {
-  text-align: center;
-}
-
-.App-logo {
+/*.App-logo {
   height: 40vmin;
   pointer-events: none;
 }

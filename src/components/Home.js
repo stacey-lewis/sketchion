@@ -14,7 +14,7 @@ function Home() {
       </div>
       {/* <Canvas /> */}
       <footer className="footer">
-        <span>&copy; <span className="logo">sketchion</span> -- Stacey lewis 2021</span><span>Created utilising <a>ml5</a> and <a>p5</a> libraries </span>
+        <span>&copy; <span className="logo">sketchion</span> -- stacey lewis 2021</span>
       </footer>
     </div>
   );
