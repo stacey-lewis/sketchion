@@ -16,7 +16,7 @@
 }
 
 body {
-  overflow:auto;
-  overflow-y:auto;
-  overflow-x:auto;
+  overflow:hidden;
+  /* overflow-y:auto;
+  overflow-x:auto; */
 }

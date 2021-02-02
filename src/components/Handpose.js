@@ -9,34 +9,36 @@ import "./Handpose.css";
 
 const Handpose = () => {
 
+  //default to line drawing
+  // let [brushSelected, setBrushSelected] = useState(1);
+  //default set to line drawing
+  let brushSelector = 1;
+
   const Sketch = (p5) => {
+      //variables for
      let cvs;
      let video;
+     //capture hand keyPoints
      let predictions = [];
      // let root = document.documentElement;
-     let prevXPos = "";
-     let prevYPos = "";
-     let prevXPosThumb = "";
-     let prevYPosThumb = "";
-     let xIndex = "";
-     let yIndex = "";
-     let xThumb = "";
-     let yThumb = "";
-     // const controls = {
-     //    clearScreen: false,
-     //    // velocityScale: 1.0,
-     //    // circleSizeScale: 1.0,
-     //    // lineDistanceThreshold: 150,
-     //    // drawCircles: true,
-     // };
-     const setWidth = (p5.windowWidth - 300);
+     let prevXPos = 0;
+     let prevYPos = 0;
+     let prevXPosThumb = 0;
+     let prevYPosThumb = 0;
+     let xIndex = 0;
+     let yIndex = 0;
+     let xThumb = 0;
+     let yThumb = 0;
+
+
+
+     //set default width for canvas
+     const setWidth = (p5.windowWidth - 340);
      const setHeight = (p5.windowHeight);
-     //toggle drawing
-     // const [drawStatus, updateDrawStatus] = useState(true);
 
     p5.setup = () => {
-        //set width, height, options for video
 
+      //set options for initialising handpose
        const options = {
          flipHorizontal: true,
          maxContinuousChecks: Infinity, // How many frames to go without running the bounding box detector. Defaults to infinity, but try a lower value if the detector is consistently producing bad predictions.
@@ -47,7 +49,8 @@ const Handpose = () => {
 
        //create p5.canvas
        cvs = p5.createCanvas(setWidth, setHeight);
-       //create video component, save into 'video' - 'video' is linked to webcam not to replication on canvas...
+
+       //create video component, save into 'video'
        let constraints = {
          video: {
            mandatory: {
@@ -69,12 +72,12 @@ const Handpose = () => {
        handpose.on("predict", results => {
          predictions = results;
        });
+
        //set canvas parent as 'handpose-canvas'
        cvs.parent('handpose-canvas');
+
        //set video parent as 'handpose-video-component'
        video.parent('handpose-video-component');
-
-
        // Hide the video element, and just show the canvas
        video.hide();
 
@@ -134,10 +137,14 @@ const Handpose = () => {
         yIndex = 0;
         xThumb = 0;
         yThumb = 0;
+        // p5.stroke(0);
+        // p5.
       };
 
 
     }; //draw
+
+
 
     //set window to expand to fullscreen
     // p5.keyPressed = (ev) => {
@@ -151,16 +158,19 @@ const Handpose = () => {
 
     const drawKeyPoints = () => {
       window.predictions = predictions; //cheat to see what is this variable in console.
-      //TODO: Create way to click button on and off for type of drawing i.e. if x selected than run y draw function ...
-      // drawFromAllHandPoints();
-      // drawFromIndexFingerSharpLine();
-      // drawFromIndexFingerCurveLine();
-      drawWithIndexAndThumb();
-      // drawFromIndexFingerDots();
+      //pass in id to identify which function to run.
+      if (brushSelector === 0) {drawIndexDots()};
+      if (brushSelector === 1) {drawIndexLine()};
+      if (brushSelector === 2) {drawIndexThumb()};
+      if (brushSelector === 3) {drawFromAllHandPoints()};
+      if (brushSelector === 4) {drawIndexThumb()};
+      if (brushSelector === 5) {drawIndexThumb()};
+
     }; //drawKeypoints
 
 
     //---------------------DRAW FUNCTIONS ----------------------
+
     const drawFromAllHandPoints = () => {
       // console.log('predictions', predictions);
       for (let i = 0; i < predictions.length; i += 1) {
@@ -185,63 +195,63 @@ const Handpose = () => {
     }; //drawFromAllHandPoints
 
     //Only draws from one point on the index finger
-    const drawFromIndexFingerSharpLine = () => {
+    const drawIndexLine = () => {
+
       for (let i = 0; i < predictions.length; i += 1) {
         const prediction = predictions[i];
-        const keypoint = prediction.landmarks[8];
-          //TODO: UPDATE WITH SINGLE COLOUR THAT IS GENERATED FROM dat.GUI
-        // p5.point(keypoint[0], keypoint[1]); //no border
-        p5.stroke(0);
-        p5.line(keypoint[0], keypoint[1], prevXPos, prevYPos);
-        prevXPos = keypoint[0];
-        prevYPos = keypoint[1];
-        // lerp = (current, new value, 0.5); - TODO: see if this works. https://www.youtube.com/watch?v=EA3-k9mnLHs - Code Train smoothing.
+        const indexFinger = prediction.landmarks[8];
+
+        xIndex = p5.map(indexFinger[0],0,640,0,setWidth);
+        yIndex = p5.map(indexFinger[1],0,480,0,setHeight);
+
+        if(prevXPos != 0 && prevYPos != 0) {
+
+          let size = 0;
+          if ( ((xIndex - prevXPos) + (yIndex - prevYPos) / 2 ) < 10 ) {
+            size = Math.abs(((xIndex - prevXPos) + (yIndex - prevYPos)) / 2);
+          } //if
+          else {
+            size = 2;
+          } //if else
+          p5.strokeWeight(size);
+          p5.stroke(0);
+          p5.line(xIndex, yIndex, prevXPos, prevYPos); //joins lines at top/bottom.
+        } //if - removes line from top left to starting position
       } //for
+      prevXPos = xIndex;
+      prevYPos = yIndex;
     }; //drawFromIndexFingerSharpLine
 
-    const drawFromIndexFingerDots = () => {
+    //circle drawing from indexFinger. Circle size increases with distance between x-
+    const drawIndexDots = () => {
       for (let i = 0; i < predictions.length; i += 1) {
         const prediction = predictions[i];
-        const keypoint = prediction.landmarks[8];
-          //TODO: UPDATE WITH SINGLE COLOUR THAT IS GENERATED FROM dat.GUI
-          if(keypoint[0] !== 0 && keypoint[2] !== 0) {
-            p5.point(keypoint[0], keypoint[1]); //no border
+        const indexFinger = prediction.landmarks[8];
+        xIndex = p5.map(indexFinger[0],0,640,0,setWidth);
+        yIndex = p5.map(indexFinger[1],0,480,0,setHeight);
+
+          if (xIndex != 0 && yIndex != 0) {
+            let size = 0;
+            if ( ((xIndex - prevXPos) + (yIndex - prevYPos) / 2 ) < 20 ) {
+              size = Math.abs(((xIndex - prevXPos) + (yIndex - prevYPos)) / 2);
+            } //if
+            else {
+              size = 20;
+            } //if else
+
             p5.fill(0);
+            p5.ellipse(xIndex , yIndex, size, size); //shape of draw.
           } //if - remove line from top of screen
+          prevXPos = xIndex;
+          prevYPos = yIndex;
+
+
       } //for
     }; //drawFromIndexFingerDots
 
-    ///THIS DIDN"T WORK.
-    const drawFromIndexFingerCurveLine = () => {
-      for (let i = 0; i < predictions.length; i += 1) {
-        const prediction = predictions[i];
-        const keypoint = prediction.landmarks[8];
-        p5.stroke(0);
-        p5.line(keypoint[0], keypoint[1], prevXPos, prevYPos);
-        prevXPos = keypoint[0];
-        prevYPos = keypoint[1];
-      } //for
-      for (let i = 0; i < predictions.length; i += 1) {
-        const prediction = predictions[i];
-        const keypoint = prediction.landmarks[8];
-        p5.stroke(0);
-        p5.line(keypoint[0], keypoint[1], prevXPos, prevYPos);
-        prevXPos = keypoint[0];
-        prevYPos = keypoint[1];
-      } //for
-    }; //drawFromIndexFingerCurveLine
+    //line drawing from thumb to index finger.
+    const drawIndexThumb = () => {
 
-    const drawWithIndexAndThumb = () => {
-      // for (let i = 0; i < predictions.length; i += 1) {
-      //   const prediction = predictions[i];
-      //   const keypoint = prediction.landmarks[8];
-      //   if(prevXPos != 0 && prevYPos != 0) {
-      //     p5.stroke(0);
-      //     p5.line(keypoint[0], keypoint[1], prevXPos, prevYPos); //joins lines at top/bottom.
-      //   } //if - removes line from top left to starting position
-      //   prevXPos = keypoint[0];
-      //   prevYPos = keypoint[1];
-      // } //for
       for (let i = 0; i < predictions.length; i += 1) {
         const prediction = predictions[i];
 
@@ -255,8 +265,6 @@ const Handpose = () => {
         prevXPos = xIndex;
         prevYPos = yIndex;
 
-
-
         const keypoint = prediction.landmarks[4];
         xThumb = p5.map(keypoint[0],0,640,0,setWidth);
         yThumb = p5.map(keypoint[1],0,480,0,setHeight);
@@ -268,6 +276,7 @@ const Handpose = () => {
           p5.line(xThumb, yThumb, prevXPos, prevYPos);
           p5.line(xThumb, yThumb, prevXPosThumb, prevYPosThumb); //joins lines at top/bottom of link
         }  //if - removes line from top left to starting position
+
         prevXPosThumb = xThumb;
         prevYPosThumb = yThumb;
       } //for
@@ -285,6 +294,11 @@ const Handpose = () => {
          // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); //use Effect
 
+  //onClick update brush selector
+  const brushSelectorFunction = (i) => {
+    brushSelector = i;
+  }; //brushSelectorFunction
+
 
 
 
@@ -295,22 +309,19 @@ const Handpose = () => {
        <header className="header">
          <h1 className="logo">sketchion.</h1>
          <div id="handpose-controls">
-           <p id="info"><span className="logo">sketchion</span> tracks your hand movement to translate your movement into a visual representation onscreen.</p>
+           <p id="info"><span className="logo">sketchion</span> tracks your hand , and translates movement into a visual representation.</p>
            <hr />
            <div className="detailed-instructions">
            <p>Simply enable access to your webcam, hold down <code>SHIFT</code> and start creating</p>
              <p>Hit <code>DOWN ARROW</code> to reset the canvas</p>
              <p>Select from the following paint styles:</p>
              <div className = "grid-swatches">
-               <p><img src="http://placekitten.com/100/100" /></p>
-               <p><img src="http://placekitten.com/100/100" /></p>
-               <p><img src="http://placekitten.com/100/100" /></p>
-               <p><img src="http://placekitten.com/100/100" /></p>
-               <p><img src="http://placekitten.com/100/100" /></p>
-               <p><img src="http://placekitten.com/100/100" /></p>
-               <p><img src="http://placekitten.com/100/100" /></p>
-               <p><img src="http://placekitten.com/100/100" /></p>
-               <p><img src="http://placekitten.com/100/100" /></p>
+               <p><img onClick={() => brushSelectorFunction(0)}src="line.png" /></p>
+               <p><img onClick={() => brushSelectorFunction(1)}src="dots.png" /></p>
+               <p><img onClick={() => brushSelectorFunction(2)}src="hash.png" /></p>
+               <p><img onClick={() => brushSelectorFunction(0)}src="line.png" /></p>
+               <p><img onClick={() => brushSelectorFunction(1)}src="dots.png" /></p>
+               <p><img onClick={() => brushSelectorFunction(2)}src="hash.png" /></p>
              </div>
           </div>
 
