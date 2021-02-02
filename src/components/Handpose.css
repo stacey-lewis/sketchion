@@ -63,33 +63,37 @@ code {
 
 #footer {
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   font-size: 10px;
 }
 
 .grid-swatches {
+  padding-top: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  /* column-gap: 3px;
-  row-gap: 3px; */
+  grid-template-rows: 1fr 1fr;
+  column-gap: 3px;
+  row-gap: 3px;
+  align-items: stretch;
+  justify-content: center;
   width: 70%;
+
 }
 
-p > img {
+.grid-swatches > img {
   width: 90%;
   border-radius: 10px;
   border: 1pt solid rgb(57, 58, 61);
   box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-  margin: 0;
-  padding: 0;
+  /* align-self: center; */
+
 }
 
 
 img:hover  {
-  border: 1pt solid rgb(168, 168, 168, 0.5);
+  border: 1pt solid rgb(0, 0, 0, 0.5);
   /* transition-delay: 0.5s; */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
 }
 
 .detailed-instructions {
