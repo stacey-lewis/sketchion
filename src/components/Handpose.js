@@ -10,24 +10,37 @@ import sketch from './Sketch';
 const Handpose = (props) => {
 
   //default set to line drawing
-  let [brushSelected, setBrushSelected] = useState(1);
-  let [outlineColorSelected, setOutlineColorSelected] = useState(1);
-  let [colorSelected, setColorSelected] = useState([0, 0, 0, 1]);
-
-  let colorPicker = [0, 0, 0, 1];
+  const [brushSelected, setBrushSelected] = useState(1);
+  const [outlineWidthSelected, setOutlineWidthSelected] = useState(1);
+  const [fillColorSelected, setFillColorSelected] = useState({
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 1
+  });
+  const [outlineColorSelected, setOutlineColorSelected] = useState({
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 1
+  });
 
   //onClick update brush selector
   const brushSelectorFunction = (i) => {
     setBrushSelected(i);
-    // brushSelector = i;
   }; //brushSelectorFunction
 
   //onChange update colour selector
-  const colourSelectorFunction = (color) => {
-    colorPicker[0] = color.rgb.r;
-    colorPicker[1] = color.rgb.g;
-    colorPicker[2] = color.rgb.b;
-    colorPicker[3] = color.rgb.a;
+  const colourSelectorFunction = (color, fill) => {
+    // console.log('fill', fillColorSelected);
+    if(fill) {
+      setFillColorSelected(color.rgb);
+      // console.log('fill - after set', fillColorSelected);
+    } else {
+      // console.log('outline', outlineColorSelected);
+      setOutlineColorSelected(color.rgb);
+      // console.log('outline - after set', outlineColorSelected);
+    }
   }; //colorSelectorFunction
 
   // // if pressed '1-6', update to brush style
@@ -58,9 +71,9 @@ const Handpose = (props) => {
   // }; //if
 
   //function to save Canvas - activated by keyPress 's' and button click
-  const onSaveClick = () => {
-    p5.saveCanvas();
-  };//onSaveClick
+  // const onSaveClick = () => {
+  //   p5.saveCanvas();
+  // };//onSaveClick
 
   return(
      <>
@@ -83,14 +96,17 @@ const Handpose = (props) => {
             </div>
 
             <ChromePicker
-                onChange={(color) => colourSelectorFunction(color) }
+                color={fillColorSelected} onChangeComplete={(color, fill) => colourSelectorFunction(color, fill=true) }
+            />
+            <ChromePicker
+                color={outlineColorSelected} onChangeComplete={(color, fill) => colourSelectorFunction(color, fill=false) }
             />
           </div>
           <p id='footer'>&copy; <span className="logo">sketchion</span> -- stacey lewis 2021</p>
         </div>
        </header>
       <div id="handpose-canvas">
-        <P5Wrapper sketch={sketch} brushselected={brushSelected} />
+        <P5Wrapper sketch={sketch} brushselected={brushSelected} outlinecolourselected={outlineColorSelected} fillcolourselected={fillColorSelected}/>
       </div>
       <div id="handpose-video-component">
         {/* WEBCAM HERE LATER ??? */}
