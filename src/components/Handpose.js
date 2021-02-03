@@ -84,15 +84,15 @@ const Handpose = (props) => {
            <p id="info"><span className="logo">sketchion</span> tracks your hand , and translates movement into a visual representation.</p>
            <hr />
            <div className="detailed-instructions">
-           <p>Simply enable access to your webcam, hold down <code>SHIFT</code> and start creating.</p>
+           <p>Simply enable webcam, hold down <code>ENTER</code> and start creating.</p>
              <p>Hit <code>DOWN ARROW</code> to reset the canvas, & <code>s</code> to download canvas.</p><br />
              <p>Select a brush (<code>1</code> - <code>6</code>):</p>
              <div className = "grid-swatches">
-               <img onClick={() => brushSelectorFunction(0)}src="dots.png" />
-               <img onClick={() => brushSelectorFunction(1)}src="line.png" />
-               <img onClick={() => brushSelectorFunction(2)}src="hash.png" />
+               <img onClick={() => brushSelectorFunction(1)}src="dots.png" />
+               <img onClick={() => brushSelectorFunction(2)}src="line.png" />
                <img onClick={() => brushSelectorFunction(3)}src="hash.png" />
-               <img onClick={() => brushSelectorFunction(4)}src="line.png" />
+               <img onClick={() => brushSelectorFunction(4)}src="hash.png" />
+               <img onClick={() => brushSelectorFunction(5)}src="line.png" />
             </div>
 
             <ChromePicker

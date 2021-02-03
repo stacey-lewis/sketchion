@@ -157,7 +157,7 @@ import P5Wrapper from 'react-p5-wrapper';
       // p5.image(video, 0, 0, setWidth, setHeight);
 
       //draw only if shift is held down
-      if (p5.keyIsDown(p5.SHIFT)) {
+      if (p5.keyIsDown(13)) {
         drawKeyPoints();
       } //if keyIsDown
 
@@ -177,7 +177,7 @@ import P5Wrapper from 'react-p5-wrapper';
           drawVar.verticesY = [];
       }; //if down arrow pushed clear screen and reset shapes
 
-      if(!p5.keyIsDown(16)) {
+      if(!p5.keyIsDown(13)) {
         drawVar.prevXPos = 0;
         drawVar.prevYPos = 0;
         drawVar.prevXPosThumb = 0;
@@ -202,27 +202,28 @@ import P5Wrapper from 'react-p5-wrapper';
       p5.stroke(drawSettings.borderColor);
 
       //check which brushSelector is selected.
-      if (drawSettings.brushSelected === 0){
-
-        p5.strokeWeight(0); //turn off border
+      if (drawSettings.brushSelected === 1){
+        p5.noStroke(); //turn off border
         drawIndexDots();
       }
-      else if (drawSettings.brushSelected === 1) {
+      else if (drawSettings.brushSelected === 2) {
         p5.strokeWeight(1); //set default line to 1.
         drawIndexLine();
       }
-      else if (drawSettings.brushSelected === 2) {
+      else if (drawSettings.brushSelected === 3) {
         p5.noFill(); //set default line to 1.
+        p5.strokeWeight(1); //set default line to 1.
         drawIndexThumb();
       }
-      else if (drawSettings.brushSelected === 3) {
+      else if (drawSettings.brushSelected === 4) {
         p5.noStroke(); //turn off border
         shadeIndexThumb(); //draw function
       }
-      else if (drawSettings.brushSelected === 4) {
+      else if (drawSettings.brushSelected === 5) {
+        
         drawFromAllHandPoints();
       }
-      else if (drawSettings.brushSelected === 5){
+      else if (drawSettings.brushSelected === 6){
         drawFromAllHandPoints();
       } //end if drawSettings.brushSelected
 
@@ -297,8 +298,7 @@ import P5Wrapper from 'react-p5-wrapper';
 
     //line drawing from thumb to index finger.
     const drawIndexThumb = () => {
-      p5.stroke(0);
-      p5.strokeWeight(1);
+
       for (let i = 0; i < drawVar.predictions.length; i += 1) {
         const prediction = drawVar.predictions[i];
 
