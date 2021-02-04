@@ -24,7 +24,8 @@ const Handpose = (props) => {
     b: 0,
     a: 1
   });
-
+  const [displayBackGroundColorPicker, setDisplayBackgroundColorPicker] = useState(false);
+  const [displayBorderColorPicker, setDisplayBorderColorPicker] = useState(false);
   //onClick update brush selector
   const brushSelectorFunction = (i) => {
     setBrushSelected(i);
@@ -75,6 +76,27 @@ const Handpose = (props) => {
   //   p5.saveCanvas();
   // };//onSaveClick
 
+  //onClick open background color selector
+  const openColorButton = (button) => {
+    if (button === 'background') {
+      setDisplayBackgroundColorPicker(!displayBackGroundColorPicker);
+    }; //if
+    if (button === 'border') {
+      setDisplayBorderColorPicker(!displayBorderColorPicker);
+    }; //if
+  }; //openColorBackgroundButton
+
+  //onClick open background color selector
+  const closeColorButton = (button) => {
+    if (button === 'background') {
+      setDisplayBackgroundColorPicker(false);
+    }; //
+    if (button === 'border') {
+      setDisplayBorderColorPicker(false);
+    }; //
+
+  }; //openColorBackgroundButton
+
   return(
      <>
      <div id="handpose-component">
@@ -85,22 +107,46 @@ const Handpose = (props) => {
            <hr />
            <div className="detailed-instructions">
            <p>Simply enable webcam, hold down <code>ENTER</code> and start creating.</p>
-             <p>Hit <code>DOWN ARROW</code> to reset the canvas, & <code>s</code> to download canvas.</p><br />
-             <p>Select a brush (<code>1</code> - <code>6</code>):</p>
+             <p>Hit <code>DOWN ARROW</code> to reset the canvas, & <code>s</code> to download canvas.</p> <br/>
+             {/* <p>Select a brush (<code>1</code> - <code>5</code>):</p> */}
              <div className = "grid-swatches">
-               <img onClick={() => brushSelectorFunction(1)}src="dots.png" />
-               <img onClick={() => brushSelectorFunction(2)}src="line.png" />
-               <img onClick={() => brushSelectorFunction(3)}src="hash.png" />
-               <img onClick={() => brushSelectorFunction(4)}src="hash.png" />
-               <img onClick={() => brushSelectorFunction(5)}src="line.png" />
+               <img onClick={() => brushSelectorFunction(1)} src="dots.png" alt="" style={{border: brushSelected === 1 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
+               <img onClick={() => brushSelectorFunction(2)} src="line.png" alt="" style={{border: brushSelected === 2 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
+               <img onClick={() => brushSelectorFunction(3)} src="hash.png" alt="" style={{border: brushSelected === 3 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
+               <img onClick={() => brushSelectorFunction(4)} src="hash-fill.png" alt="" style={{border: brushSelected === 4 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
+               <img onClick={() => brushSelectorFunction(5)} src="hand.png" alt="" style={{border: brushSelected === 5 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
+            </div>
+            <div>
+              <button className="colourButton" onClick={() => openColorButton('background')}>fill colour
+                <div className='previewBackgroundColor' style={{backgroundColor: ` rgba(${fillColorSelected.r},${fillColorSelected.g},${fillColorSelected.b},${fillColorSelected.a})`}}>
+
+                </div>
+              </button>
+              { displayBackGroundColorPicker ?
+                <div className='popover'>
+                  <div className='cover' onClick={() => closeColorButton('background')} ></div>
+                 <ChromePicker
+                    color={fillColorSelected} onChangeComplete={(color, fill) => colourSelectorFunction(color, fill=true) } />
+              </div> : null }
             </div>
 
-            <ChromePicker
-                color={fillColorSelected} onChangeComplete={(color, fill) => colourSelectorFunction(color, fill=true) }
-            />
-            <ChromePicker
-                color={outlineColorSelected} onChangeComplete={(color, fill) => colourSelectorFunction(color, fill=false) }
-            />
+            <div>
+              <button className="colourButton" onClick={() => openColorButton('border')}>
+                border colour
+                <div className='previewBorderColor' style={{border: `2pt solid rgba(${outlineColorSelected.r},${outlineColorSelected.g},${outlineColorSelected.b},${outlineColorSelected.a})`}}>
+                </div>
+            </button>
+              { displayBorderColorPicker ?
+                <div className='popover'>
+                  <div className='cover' onClick={() => closeColorButton('border')} ></div>
+                  <ChromePicker
+                  color={outlineColorSelected} onChangeComplete={(color, fill) => colourSelectorFunction(color, fill=false) } />
+
+              </div> : null }
+            </div>
+            <div>
+
+            </div>
           </div>
           <p id='footer'>&copy; <span className="logo">sketchion</span> -- stacey lewis 2021</p>
         </div>
