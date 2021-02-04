@@ -94,8 +94,8 @@ const Handpose = (props) => {
              <div className = "grid-swatches">
                <img onClick={() => brushSelectorFunction(1)} src="dots.png" alt="" style={{border: brushSelected === 1 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
                <img onClick={() => brushSelectorFunction(2)} src="line.png" alt="" style={{border: brushSelected === 2 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
-               <img onClick={() => brushSelectorFunction(3)} src="hash.png" alt="" style={{border: brushSelected === 3 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
-               <img onClick={() => brushSelectorFunction(4)} src="hash-fill.png" alt="" style={{border: brushSelected === 4 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
+               <img onClick={() => brushSelectorFunction(3)} src="Hash.png" alt="" style={{border: brushSelected === 3 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
+               <img onClick={() => brushSelectorFunction(4)} src="Hash-fill.png" alt="" style={{border: brushSelected === 4 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
                <img onClick={() => brushSelectorFunction(5)} src="hand.png" alt="" style={{border: brushSelected === 5 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
             </div>
             <div className="button1">
