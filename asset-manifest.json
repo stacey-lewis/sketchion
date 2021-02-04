@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/sketchion/static/css/main.6fc87304.chunk.css",
+    "main.js": "/sketchion/static/js/main.ac5f4a96.chunk.js",
+    "main.js.map": "/sketchion/static/js/main.ac5f4a96.chunk.js.map",
+    "runtime-main.js": "/sketchion/static/js/runtime-main.838ee6d1.js",
+    "runtime-main.js.map": "/sketchion/static/js/runtime-main.838ee6d1.js.map",
+    "static/js/2.169b1275.chunk.js": "/sketchion/static/js/2.169b1275.chunk.js",
+    "static/js/2.169b1275.chunk.js.map": "/sketchion/static/js/2.169b1275.chunk.js.map",
+    "static/js/3.1fd211bc.chunk.js": "/sketchion/static/js/3.1fd211bc.chunk.js",
+    "static/js/3.1fd211bc.chunk.js.map": "/sketchion/static/js/3.1fd211bc.chunk.js.map",
+    "index.html": "/sketchion/index.html",
+    "static/css/main.6fc87304.chunk.css.map": "/sketchion/static/css/main.6fc87304.chunk.css.map",
+    "static/js/2.169b1275.chunk.js.LICENSE.txt": "/sketchion/static/js/2.169b1275.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/sketchion/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.838ee6d1.js",
+    "static/js/2.169b1275.chunk.js",
+    "static/css/main.6fc87304.chunk.css",
+    "static/js/main.ac5f4a96.chunk.js"
+  ]
+}
