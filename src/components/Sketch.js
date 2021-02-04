@@ -12,7 +12,9 @@ import P5Wrapper from 'react-p5-wrapper';
     let drawSettings = {
       fillColor: {},
       borderColor: {},
-      brushSelected: 1
+      brushSelected: 1,
+      // loadingMessageSetter: null,
+      // backgroundColor: {}
     }; //drawSettings
 
       //variables for setting positions
@@ -34,9 +36,10 @@ import P5Wrapper from 'react-p5-wrapper';
      let video;
 
      //set default width for canvas
-     const setWidth = (p5.windowWidth - 340);
-     const setHeight = (p5.windowHeight);
+     let setWidth = (p5.windowWidth - 340);
+     let setHeight = (p5.windowHeight);
 
+     let canvasSize = {};
      // //capture hand keyPoints
      // let drawVar.predictions = [];
      // // let root = document.documentElement;
@@ -79,10 +82,6 @@ import P5Wrapper from 'react-p5-wrapper';
        //   // audio: true
        // };
 
-       const saveImage = () =>
-          {p5.saveCanvas('sketchion-creation', 'png');
-        } //save option
-
        video = p5.createCapture(p5.VIDEO);
 
         // call modelReady() when it is loaded
@@ -104,21 +103,6 @@ import P5Wrapper from 'react-p5-wrapper';
 
        //set background colour to white of canvas
        p5.background(255);
-
-       // Create a button for saving the canvas TODO:
-        // const saveBtn = p5.createButton("Save Canvas");
-        // saveBtn.parent('handpose-controls');
-        // saveBtn.position(0, 0);
-        // saveBtn.mousePressed(onSaveClick);
-
-      //----------------------- TODO: Auto resize -----------------------------
-
-       //auto resize to fit window on resize of browser window
-       // p5.windowResized = () => {
-       //   resizeCanvas(windowWidth, windowHeight);
-       // };
-
-
     }; //setup
 
     //-----------------------WRAPPER ---------------------------
@@ -128,6 +112,12 @@ import P5Wrapper from 'react-p5-wrapper';
       //if notice change to brush - update in local variable
       if(props.brushselected) {
         drawSettings.brushSelected = props.brushselected;
+      } //if
+
+      if(typeof props.setloadingmessage === "function") {
+
+        console.log('setloading message!', props.setloadingmessage);
+        drawSettings.loadingMessageSetter = props.setloadingmessage;
       } //if
 
       //if notice change to fill colour - update in local variable
@@ -148,7 +138,11 @@ import P5Wrapper from 'react-p5-wrapper';
 
 
     ml5.modelReady = () => {
+      //GET LOADER FROM AND HIDE.
       console.log("Model ready!");
+      // console.log('props loading message - before ', props.setloadingmessage);
+      drawSettings.loadingMessageSetter("");
+      // console.log('props loading message - after ', props.loadingmessage);
 
     }; //modelReady
 
@@ -186,11 +180,21 @@ import P5Wrapper from 'react-p5-wrapper';
         drawVar.yIndex = 0;
         drawVar.xThumb = 0;
         drawVar.yThumb = 0;
-        // colorPicker = [0,0,0,1];
         drawVar.verticesX = [];
         drawVar.verticesY = [];
         // p5.
       }; //if SHIFT is not down
+
+      if (p5.keyIsPressed == true && p5.key === 's') {
+        saveImage();
+      } //save 's' shortcut
+
+
+        // p5.windowResized = () => {
+        //   console.log('windowresized');
+        //   // p5.resizeCanvas(setWidth, setHeight);
+        // }; //windowResized
+
 
     }; //draw
 
@@ -220,7 +224,7 @@ import P5Wrapper from 'react-p5-wrapper';
         shadeIndexThumb(); //draw function
       }
       else if (drawSettings.brushSelected === 5) {
-        
+
         drawFromAllHandPoints();
       }
       else if (drawSettings.brushSelected === 6){
@@ -228,7 +232,6 @@ import P5Wrapper from 'react-p5-wrapper';
       } //end if drawSettings.brushSelected
 
     }; //drawKeypoints
-
 
     //---------------------DRAW FUNCTIONS --------------------
 
@@ -372,7 +375,50 @@ import P5Wrapper from 'react-p5-wrapper';
       } //for
     }; //shadeIndexThumb
 
-    //-----------------------------------------------------------
+
+    const saveImage = () =>
+       {p5.saveCanvas('sketchion-creation', 'png');
+     } //save option
+
+
+    //------------TODO: -----------------------------------------------
+      // // if pressed '1-6', update to brush style
+      // if (p5.keyIsPressed == true) {
+      //   if (p5.key === '1') {
+      //     setBrushSelected(0);
+      //     console.log('brushSelected-keypress', brushSelected);
+      //   } //line
+      //   else if (p5.key === 2){
+      //     setBrushSelected(1);
+      //     console.log('brushSelected-keypress', brushSelected);
+      //   }//circle
+      //   else if (p5.key === '3'){
+      //     setBrushSelected(2);
+      //   }//area
+      //   else if (p5.key === '4'){
+      //     setBrushSelected(3);
+      //   }//circle
+      //   else if (p5.key === '5'){
+      //     setBrushSelected(4);
+      //   }//area
+      //   else if (p5.key === '6'){
+      //     setBrushSelected(5);
+      //   }//circle
+      // }; //if
+
+      //function to save Canvas - activated by keyPress 's' and button click
+      // const download = () => {
+      //   p5.saveCanvas();
+      // };//onSaveClick
+
+      //----------------------- TODO: Auto resize -----------------------------
+
+    // p5.windowResized = () => {
+    //   p5.resizeCanvas(setWidth, setHeight);
+    // }; //windowResized
+  // };
+
+
   }; //sketch
 
   export default sketch;

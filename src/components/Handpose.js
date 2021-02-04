@@ -11,6 +11,7 @@ const Handpose = (props) => {
 
   //default set to line drawing
   const [brushSelected, setBrushSelected] = useState(1);
+  const [loadingMessage, setLoadingMessage] = useState('loading ... ');
   const [outlineWidthSelected, setOutlineWidthSelected] = useState(1);
   const [fillColorSelected, setFillColorSelected] = useState({
     r: 0,
@@ -26,6 +27,18 @@ const Handpose = (props) => {
   });
   const [displayBackGroundColorPicker, setDisplayBackgroundColorPicker] = useState(false);
   const [displayBorderColorPicker, setDisplayBorderColorPicker] = useState(false);
+  // const [windowSize, setWindowSize] = useState({
+  //     width: window.innerWidth,
+  //     height: window.innerHeight
+  //   }); //canvasSize state
+
+    // useEffect( () => {
+    //   if (windowSize.width != window.innerWidth || windowSize.height != window.innerHeight) {
+    //     console.log('updating windowsize!');
+    //     setWindowSize({width: window.innerWidth, height: window.innerHeight});
+    //   } //if
+    // },[]); //useEffect
+
   //onClick update brush selector
   const brushSelectorFunction = (i) => {
     setBrushSelected(i);
@@ -44,37 +57,6 @@ const Handpose = (props) => {
     }
   }; //colorSelectorFunction
 
-  // // if pressed '1-6', update to brush style
-  // if (p5.keyIsPressed == true) {
-  //   if (p5.key === '1') {
-  //     setBrushSelected(0);
-  //     console.log('brushSelected-keypress', brushSelected);
-  //   } //line
-  //   else if (p5.key === 2){
-  //     setBrushSelected(1);
-  //     console.log('brushSelected-keypress', brushSelected);
-  //   }//circle
-  //   else if (p5.key === '3'){
-  //     setBrushSelected(2);
-  //   }//area
-  //   else if (p5.key === '4'){
-  //     setBrushSelected(3);
-  //   }//circle
-  //   else if (p5.key === '5'){
-  //     setBrushSelected(4);
-  //   }//area
-  //   else if (p5.key === '6'){
-  //     setBrushSelected(5);
-  //   }//circle
-  //   if (p5.key === 's') {
-  //     onSaveClick();
-  //   } //save 's' shortcut
-  // }; //if
-
-  //function to save Canvas - activated by keyPress 's' and button click
-  // const onSaveClick = () => {
-  //   p5.saveCanvas();
-  // };//onSaveClick
 
   //onClick open background color selector
   const openColorButton = (button) => {
@@ -103,7 +85,7 @@ const Handpose = (props) => {
        <header className="header">
          <h1 className="logo">sketchion.</h1>
          <div id="handpose-controls">
-           <p id="info"><span className="logo">sketchion</span> tracks your hand , and translates movement into a visual representation.</p>
+           <p id="info"><span className="logo">sketchion</span> tracks your hand movement - enabling you to create expressive digital artworks.</p>
            <hr />
            <div className="detailed-instructions">
            <p>Simply enable webcam, hold down <code>ENTER</code> and start creating.</p>
@@ -116,9 +98,9 @@ const Handpose = (props) => {
                <img onClick={() => brushSelectorFunction(4)} src="hash-fill.png" alt="" style={{border: brushSelected === 4 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
                <img onClick={() => brushSelectorFunction(5)} src="hand.png" alt="" style={{border: brushSelected === 5 ? "2pt solid rgb(185, 185, 185)": "2pt solid rgb(185, 185, 185, 0.15)"}}/>
             </div>
-            <div>
+            <div className="button1">
               <button className="colourButton" onClick={() => openColorButton('background')}>fill colour
-                <div className='previewBackgroundColor' style={{backgroundColor: ` rgba(${fillColorSelected.r},${fillColorSelected.g},${fillColorSelected.b},${fillColorSelected.a})`}}>
+                <div className='previewBackgroundColor' style={{backgroundColor: ` rgba(${fillColorSelected.r},${fillColorSelected.g},${fillColorSelected.b},${fillColorSelected.a})`, border: `2pt solid  rgba(${fillColorSelected.r},${fillColorSelected.g},${fillColorSelected.b},${fillColorSelected.a})`}}>
 
                 </div>
               </button>
@@ -130,12 +112,14 @@ const Handpose = (props) => {
               </div> : null }
             </div>
 
-            <div>
-              <button className="colourButton" onClick={() => openColorButton('border')}>
-                border colour
-                <div className='previewBorderColor' style={{border: `2pt solid rgba(${outlineColorSelected.r},${outlineColorSelected.g},${outlineColorSelected.b},${outlineColorSelected.a})`}}>
-                </div>
-            </button>
+            <div className="button2">
+              <div>
+                <button className="colourButton" onClick={() => openColorButton('border')}>
+                  border colour
+                  <div className='previewBorderColor' style={{border: `2pt solid rgba(${outlineColorSelected.r},${outlineColorSelected.g},${outlineColorSelected.b},${outlineColorSelected.a})`}}>
+                  </div>
+                </button>
+              </div>
               { displayBorderColorPicker ?
                 <div className='popover'>
                   <div className='cover' onClick={() => closeColorButton('border')} ></div>
@@ -152,7 +136,11 @@ const Handpose = (props) => {
         </div>
        </header>
       <div id="handpose-canvas">
-        <P5Wrapper sketch={sketch} brushselected={brushSelected} outlinecolourselected={outlineColorSelected} fillcolourselected={fillColorSelected}/>
+        <div className="loadingmessage">{loadingMessage} </div>
+        <P5Wrapper sketch={sketch} brushselected={brushSelected} outlinecolourselected={outlineColorSelected} fillcolourselected={fillColorSelected}
+        setloadingmessage={setLoadingMessage}
+        // windowsize={windowSize}
+      />
       </div>
       <div id="handpose-video-component">
         {/* WEBCAM HERE LATER ??? */}

@@ -9,7 +9,7 @@
 }
 
 h1 {
-  margin-top: 150px;
+  margin-top: 120px;
   padding: 20px 0 ;
   font-size: 50px;
 }
@@ -52,6 +52,7 @@ video {
 
 #info {
   font-size: 16px;
+  margin: -10px 0 50px;
 }
 
 code {
@@ -68,7 +69,7 @@ code {
 }
 
 .grid-swatches {
-  padding-top: 10px;
+  padding-top: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
@@ -99,6 +100,7 @@ img:hover, button:hover  {
 .detailed-instructions {
   font-size: 14px;
   padding-top: 0;
+  margin-top: 0;
 }
 
 .popover {
@@ -118,7 +120,7 @@ button {
   color: #B5B2B0;
   display: inline-block;
   width: 40%;
-  margin-top: 10px;
+  margin-top: 20px;
   /* padding: 3px; */
   border: 2pt solid rgb(185, 185, 185, 0.15);
   box-shadow: 0 1px 2px rgba(0,0,0,0.15);
@@ -139,12 +141,12 @@ button {
   height: 10px;
   background-color: black;
   border-radius: 7px;
-  border: 2pt solid rgb(57, 58, 61);
+  border: 2pt solid #B5B2B0;
 }
 
 .previewBorderColor {
   position: relative;
-  right: -5%;
+  right: -7%;
   top: 3px;
   display: inline-block;
   width: 10px;
@@ -152,4 +154,13 @@ button {
   background-color: rgb(57, 58, 61);
   border-radius: 7px;
   border: 2pt solid rgb(57, 58, 61);
+}
+
+.loadingmessage {
+  font-size: 50pt;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  color: rgb(57, 58, 61);
+  z-index: 2;
 }
