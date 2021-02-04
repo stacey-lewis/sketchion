@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# Sketchion web Drawing App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Motivation:
+I enjoy the physical act of painting and wanted to translate this into a digital environment. It's great fun to see how movement can quickly create interesting effects with little effort and time - I find it quite therapeutic.
 
-## Available Scripts
 
-In the project directory, you can run:
+## Overview:
 
-### `yarn start`
+Sketchion is a web app that allows you to draw in the browser using hand movement and a selection of brush styles and colour.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The app uses your webcam to recognise hand movement via the ml5 package - handpose - and then translates this to the screen canvas utilising p5.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+There are 5 types of brushes to choose from that take location data from points on your hand (mostly index and / or thumb) to draw onto the canvas. The speed with which you move your hand will alter the size of the 'filled circle' and 'line' brushes.
 
-### `yarn test`
+#### Brush types:
+- filled circle - set colour via fill colour button, does not have a border colour. The speed of your movement translates to   
+- line - set colour via border button, does not have a fill colour
+- hash outline - set colour with border button, does not have fill colour. This brush maps the distance from thumb to index finger.
+- hash fill - set colour with fill colour button, does not have a border. This brush maps the distance from thumb to index finger.
+- hand - mostly to be able to see how the ml5 library works - this has a border and fill colour on each landmark of the hand.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies used:
+- React (hooks)
+- ml5 - handpose (hand recognition pre-trained model)
+- p5 - canvas drawing tool
+- React-color (for colour swatches)
+- react-p5-wrapper (enable passing of props to p5)
 
-### `yarn build`
+## Instructions for use:
+- enable WebCam
+- wait a few seconds for the webcam to load...
+- choose a brush swatch (default - filled circle) fill colour and border colour (default - black) (see notes above for which brushes have borders vs fill).
+- hold the 'RETURN' key to draw and release to stop drawing.
+- Slowly move your hand across your screen to see your movement come to life! Play with moving your hand in different directions at different speeds, and try to keep your hand pointed at the camera so it can be accurately mapped (although you'll get some interesting effects as the model tries to recognise your hand). Try different brushes, and colours with high transparency to get some interesting effects! Have a play!
+- hit 's' (lowercase) key to download your creation!
+- hit 'DOWN ARROW' to clear the canvas, or refresh the page.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+NOTE: the ml5 handpose model can only recognise one hand at a time at the time of creating this app.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Known bugs:
+- canvas cannot be resized dynamically. If you resize after load you need to refresh the browser window to resize the canvas.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Planned additions:
+- implement similar drawing via face landmark and body landmark detection (also via ml5 package.)
+- additional brushes with different shapes
+- ability to choose background colour
+- full screen drawing (hide side menu)
+- fix canvase resize

@@ -13,8 +13,7 @@ import P5Wrapper from 'react-p5-wrapper';
       fillColor: {},
       borderColor: {},
       brushSelected: 1,
-      // loadingMessageSetter: null,
-      // backgroundColor: {}
+      loadingMessageSetter: null,
     }; //drawSettings
 
       //variables for setting positions
@@ -138,12 +137,8 @@ import P5Wrapper from 'react-p5-wrapper';
 
 
     ml5.modelReady = () => {
-      //GET LOADER FROM AND HIDE.
       console.log("Model ready!");
-      // console.log('props loading message - before ', props.setloadingmessage);
       drawSettings.loadingMessageSetter("");
-      // console.log('props loading message - after ', props.loadingmessage);
-
     }; //modelReady
 
     p5.draw = () => {
@@ -380,36 +375,6 @@ import P5Wrapper from 'react-p5-wrapper';
        {p5.saveCanvas('sketchion-creation', 'png');
      } //save option
 
-
-    //------------TODO: -----------------------------------------------
-      // // if pressed '1-6', update to brush style
-      // if (p5.keyIsPressed == true) {
-      //   if (p5.key === '1') {
-      //     setBrushSelected(0);
-      //     console.log('brushSelected-keypress', brushSelected);
-      //   } //line
-      //   else if (p5.key === 2){
-      //     setBrushSelected(1);
-      //     console.log('brushSelected-keypress', brushSelected);
-      //   }//circle
-      //   else if (p5.key === '3'){
-      //     setBrushSelected(2);
-      //   }//area
-      //   else if (p5.key === '4'){
-      //     setBrushSelected(3);
-      //   }//circle
-      //   else if (p5.key === '5'){
-      //     setBrushSelected(4);
-      //   }//area
-      //   else if (p5.key === '6'){
-      //     setBrushSelected(5);
-      //   }//circle
-      // }; //if
-
-      //function to save Canvas - activated by keyPress 's' and button click
-      // const download = () => {
-      //   p5.saveCanvas();
-      // };//onSaveClick
 
       //----------------------- TODO: Auto resize -----------------------------
 
